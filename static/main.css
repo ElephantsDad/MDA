@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css?family=Kurale|Marmelad|Neucha|Pattaya|Spectral+SC');
+
+body {
+  background: #e9ebef;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.bg-steel {
+  background-color: #1c2135;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+.game_title {
+   font-family: 'Neucha';
+   color: #1c2135;
+   font-size: 3.5rem;
+}
+.main-text {
+   font-family: 'Marmelad';
+   color: #1c2135;
+   font-size: 1.8rem;
+}
+.small-text {
+   font-family: 'Marmelad';
+   color: #1c2135;
+   font-size: 1.5rem;
+   text-align: center;
+}
+
+.myButton {
+	background-color:#5a6794;
+	-moz-border-radius:11px;
+	-webkit-border-radius:11px;
+	border-radius:11px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:'Marmelad';
+	font-size:17px;
+	padding:16px 28px;
+	text-decoration:none;
+}
+.myButton:hover {
+	background-color:#1c2135;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
