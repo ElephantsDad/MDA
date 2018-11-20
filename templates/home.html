@@ -8,16 +8,34 @@
          <div class="text-nowrap text-center game_title">Добро пожаловать в НАЗВАНИЕ</div>
          <div class="text-center main-text mt-3 pl-5 pr-5">
             Включайте свое красноречие и сообразительность, в этой игре Вам помогут только они!<br>
-            Семь игроков и только один - шпион. Сможете ли Вы раскусить обманщика за 8 минут?
+            Семь игроков и только один — шпион. Сможете ли Вы найти его за 8 минут?
             А притвориться "своим" и угадать локацию, на которой все находятся?
-            Вы можете только задавать вопросы и отвечать на них, но и этого достаточно, чтобы
-            ввести всех в заблуждение или раскусить лжеца.
+            Если Вы обычный человек, задавайте другим игрокам вопросы, связанные с локацией, чтобы вычислить шпиона.
+            А если вы шпион — внимательно следите за ответами игроков, чтобы угадать локацию.
          </div>
          <div class="small-text mt-3">
             Рекомендуем сначала посмотреть <a href="{{ url_for('rules') }}">правила игры</a>
          </div>
-         <div class="mt-5 text-center">
-               <button class="myButton">Начать игру</button>
+         <div class="mt-4 text-center">
+            <form  action="" method="post">
+               {{ form.hidden_tag() }}
+               <fieldset class="form-group ">
+                  <div class="form-inline justify-content-center">
+                     {{ form.username.label(class="form-control-label col-md-2 main-text") }}
+                     {% if form.username.errors %}
+                        {{ form.username(class="form-control form-control-lg col-md-2 is-invalid") }}
+                           <div class="invalid-feedback">
+                              {% for error in form.username.errors %}
+                                 <span>{{ error }}</span>
+                              {% endfor %}
+                           </div>
+                     {% else %}
+                        {{ form.username(class="form-control form-control-lg col-md-4") }}
+                     {% endif %}
+                  </div>
+               </fieldset>
+               {{ form.submit(class="btn btn-default btn-lg col-md-3") }}
+            </form>
          </div>
       </div>
       <div class="col-md-2">

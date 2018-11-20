@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Kurale|Marmelad|Neucha|Pattaya|Spectral+SC');
 
+a {
+   color:#5a6794;
+}
+
+a:hover {
+   color:#1c2135;
+}
 body {
   background: #e9ebef;
   color: #333333;
@@ -11,7 +18,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-steel {
+  font-family: 'Neucha';
   background-color: #1c2135;
+
 }
 
 .site-header .navbar-nav .nav-link {
@@ -28,37 +37,37 @@ h1, h2, h3, h4, h5, h6 {
 .game_title {
    font-family: 'Neucha';
    color: #1c2135;
-   font-size: 3.5rem;
+   font-size: 3rem;
 }
 .main-text {
    font-family: 'Marmelad';
    color: #1c2135;
-   font-size: 1.8rem;
+   font-size: 1.3rem;
 }
 .small-text {
    font-family: 'Marmelad';
    color: #1c2135;
-   font-size: 1.5rem;
+   font-size: 1.1rem;
    text-align: center;
 }
-
-.myButton {
-	background-color:#5a6794;
-	-moz-border-radius:11px;
-	-webkit-border-radius:11px;
-	border-radius:11px;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:'Marmelad';
-	font-size:17px;
-	padding:16px 28px;
-	text-decoration:none;
+.btn {
+   background-color:#5a6794;
+   -moz-border-radius:11px;
+   -webkit-border-radius:11px;
+   border-radius:11px;
+   display:inline-block;
+   cursor:pointer;
+   color:#ffffff;
+   font-family:'Marmelad';
+   font-size:17px;
+   /*padding:16px 28px;*/
+   text-decoration:none;
+   box-shadow: none;
 }
-.myButton:hover {
+.btn:hover {
 	background-color:#1c2135;
 }
-.myButton:active {
+.btn:active {
 	position:relative;
 	top:1px;
 }
