@@ -2,10 +2,10 @@
 {% block content %}
    <div class="row">
       <div class="col-md-2">
-         Картиночки
+
       </div>
       <div class="col-md-8">
-         <div class="text-nowrap text-center game_title">Добро пожаловать в НАЗВАНИЕ</div>
+         <div class="text-nowrap text-center game_title">Добро пожаловать в "Guess Who"</div>
          <div class="text-center main-text mt-3 pl-5 pr-5">
             Включайте свое красноречие и сообразительность, в этой игре Вам помогут только они!<br>
             Семь игроков и только один — шпион. Сможете ли Вы найти его за 8 минут?
@@ -14,23 +14,23 @@
             А если вы шпион — внимательно следите за ответами игроков, чтобы угадать локацию.
          </div>
          <div class="small-text mt-3">
-            Рекомендуем сначала посмотреть <a href="{{ url_for('rules') }}">правила игры</a>
+            Сначала ознакомьтесь с <a href="{{ url_for('rules') }}">правилами игры</a>.
          </div>
-         <div class="mt-4 text-center">
+         <div class="mt-4 text-center justify-content-center">
             <form  action="" method="post">
                {{ form.hidden_tag() }}
-               <fieldset class="form-group ">
-                  <div class="form-inline justify-content-center">
+               <fieldset class="form-group text-center">
+                  <div class="text-center">
                      {{ form.username.label(class="form-control-label col-md-2 main-text") }}
                      {% if form.username.errors %}
-                        {{ form.username(class="form-control form-control-lg col-md-2 is-invalid") }}
+                        {{ form.username(class="form-control form-control-lg col-md-3 is-invalid text-centered") }}
                            <div class="invalid-feedback">
                               {% for error in form.username.errors %}
                                  <span>{{ error }}</span>
                               {% endfor %}
                            </div>
                      {% else %}
-                        {{ form.username(class="form-control form-control-lg col-md-4") }}
+                        {{ form.username(class="form-control form-control-lg col-md-3 text-centered") }}
                      {% endif %}
                   </div>
                </fieldset>
@@ -39,7 +39,7 @@
          </div>
       </div>
       <div class="col-md-2">
-         Картиночки
+         
       </div>
    </div>
 {% endblock content %}
