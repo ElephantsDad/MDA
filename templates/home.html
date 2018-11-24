@@ -1,45 +1,47 @@
 {% extends "layout.html" %}
 {% block content %}
    <div class="row">
-      <div class="col-md-2">
-
-      </div>
-      <div class="col-md-8">
-         <div class="text-nowrap text-center game_title">Добро пожаловать в "Guess Who"</div>
-         <div class="text-center main-text mt-3 pl-5 pr-5">
-            Включайте свое красноречие и сообразительность, в этой игре Вам помогут только они!<br>
-            Семь игроков и только один — шпион. Сможете ли Вы найти его за 8 минут?
-            А притвориться "своим" и угадать локацию, на которой все находятся?
-            Если Вы обычный человек, задавайте другим игрокам вопросы, связанные с локацией, чтобы вычислить шпиона.
-            А если вы шпион — внимательно следите за ответами игроков, чтобы угадать локацию.
+         <div class="col-md-2 p-0">
+            <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid mb-1 float-left">
+            <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid mb-1 float-right">
          </div>
-         <div class="small-text mt-3">
-            Сначала ознакомьтесь с <a href="{{ url_for('rules') }}">правилами игры</a>.
+         <div class="col-md-8">
+            <div class="text-nowrap text-center game_title">Добро пожаловать в "Guess Who"</div>
+            <div class="text-center main-text mt-3 pl-5 pr-5">
+               Включайте свое красноречие и сообразительность, в этой игре Вам помогут только они!<br>
+               Семь игроков и только один — шпион. Сможете ли Вы найти его за 8 минут?
+               А притвориться "своим" и угадать локацию, на которой все находятся?
+               Если Вы обычный человек, задавайте другим игрокам вопросы, связанные с локацией, чтобы вычислить шпиона.
+               А если вы шпион — внимательно следите за ответами игроков, чтобы угадать локацию.
+            </div>
+            <div class="small-text mt-3">
+               Сначала ознакомьтесь с <a href="{{ url_for('rules') }}">правилами игры</a>.
+            </div>
+            <div class="mt-4 text-center justify-content-center">
+               <form  action="" method="post">
+                  {{ form.hidden_tag() }}
+                  <fieldset class="form-group text-center">
+                     <div class="text-center">
+                        {{ form.username.label(class="form-control-label col-md-2 main-text") }}
+                        {% if form.username.errors %}
+                           {{ form.username(class="form-control form-control-lg col-md-3 is-invalid text-centered") }}
+                              <div class="invalid-feedback">
+                                 {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                 {% endfor %}
+                              </div>
+                        {% else %}
+                           {{ form.username(class="form-control form-control-lg col-md-3 text-centered") }}
+                        {% endif %}
+                     </div>
+                  </fieldset>
+                  {{ form.submit(class="btn btn-default btn-lg col-md-3") }}
+               </form>
+            </div>
          </div>
-         <div class="mt-4 text-center justify-content-center">
-            <form  action="" method="post">
-               {{ form.hidden_tag() }}
-               <fieldset class="form-group text-center">
-                  <div class="text-center">
-                     {{ form.username.label(class="form-control-label col-md-2 main-text") }}
-                     {% if form.username.errors %}
-                        {{ form.username(class="form-control form-control-lg col-md-3 is-invalid text-centered") }}
-                           <div class="invalid-feedback">
-                              {% for error in form.username.errors %}
-                                 <span>{{ error }}</span>
-                              {% endfor %}
-                           </div>
-                     {% else %}
-                        {{ form.username(class="form-control form-control-lg col-md-3 text-centered") }}
-                     {% endif %}
-                  </div>
-               </fieldset>
-               {{ form.submit(class="btn btn-default btn-lg col-md-3") }}
-            </form>
+         <div class="col-md-2 p-0">
+            <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid mb-1 float-right">
+            <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid mb-1 float-left">
          </div>
-      </div>
-      <div class="col-md-2">
-         
-      </div>
    </div>
 {% endblock content %}

@@ -1,6 +1,37 @@
 {% extends "layout.html" %}
 {% block content %}
    <div class="row">
-      Игра
+      <div class="col-md-3 float-left">
+         <div class="row">
+            <div class="col-md-4 imback_height locback p-1">
+               <div class="row">
+                  <div class="col-md-12 imback_height_half">
+                     <div class="text-center small-text" style="text-decoration: underline">
+                        Локация
+                     </div>
+                     <div class="text-center small-text">
+                        "локация"
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-12 imback_height_half">
+                     <div class="text-center small-text" style="text-decoration: underline">
+                        Роль
+                     </div>
+                     <div class="text-center small-text">
+                        "роль"
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-8 imback_height imback pl-1 pr-1 pt-2 pb-2 align-items-center">
+               <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid">
+            </div>
+         </div>
+
+
+      </div>
    </div>
+
 {% endblock content %}

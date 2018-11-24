@@ -47,7 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 .small-text {
    font-family: 'Marmelad';
    color: #1c2135;
-   font-size: 1.1rem;
+   font-size: 1.2rem;
    text-align: center;
 }
 .btn {
@@ -70,4 +70,20 @@ h1, h2, h3, h4, h5, h6 {
 .btn:active {
 	position:relative;
 	top:1px;
+}
+
+.imback {
+   background-color:#d4bd87;
+}
+.locback {
+   background-color:#a9794b;
+}
+.imback_height {
+    height: 10rem;
+}
+.locback_height {
+    height: 5rem;
+}
+.imback_height_half {
+   height: 5rem;
 }
