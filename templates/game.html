@@ -29,8 +29,15 @@
                <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid">
             </div>
          </div>
+      </div>
+      <div class="col-md-8">
+         <div class="row">
+            {% for user in users %}
 
+                  <div class="main-text"> {{ user.username }}</div>                            
 
+            {% endfor %}
+         </div>
       </div>
    </div>
 
