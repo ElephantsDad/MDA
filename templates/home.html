@@ -2,8 +2,7 @@
 {% block content %}
    <div class="row">
          <div class="col-md-2 p-0">
-            <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid mb-1 float-left">
-            <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid mb-1 float-right">
+
          </div>
          <div class="col-md-8">
             <div class="text-nowrap text-center game_title">Добро пожаловать в "Guess Who"</div>
@@ -17,21 +16,21 @@
             <div class="small-text mt-3">
                Сначала ознакомьтесь с <a href="{{ url_for('rules') }}">правилами игры</a>.
             </div>
-            <div class="mt-4 text-center justify-content-center">
+            <div class="mt-4 text-center">
                <form  action="" method="post">
                   {{ form.hidden_tag() }}
                   <fieldset class="form-group text-center">
-                     <div class="text-center">
-                        {{ form.username.label(class="form-control-label col-md-2 main-text") }}
+                     <div class="text-center form-row justify-content-center">
+                        {{ form.username.label(class="form-control-label col-md-2 main-text text-left") }}
                         {% if form.username.errors %}
-                           {{ form.username(class="form-control form-control-lg col-md-3 is-invalid text-centered") }}
+                           {{ form.username(class="form-control form-control-sm col-md-2 is-invalid") }}
                               <div class="invalid-feedback">
                                  {% for error in form.username.errors %}
                                     <span>{{ error }}</span>
                                  {% endfor %}
                               </div>
                         {% else %}
-                           {{ form.username(class="form-control form-control-lg col-md-3 text-centered") }}
+                           {{ form.username(class="form-control form-control-sm  col-md-2") }}
                         {% endif %}
                      </div>
                   </fieldset>
@@ -40,8 +39,7 @@
             </div>
          </div>
          <div class="col-md-2 p-0">
-            <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid mb-1 float-right">
-            <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid mb-1 float-left">
+            
          </div>
    </div>
 {% endblock content %}
