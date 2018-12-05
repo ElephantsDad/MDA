@@ -29,5 +29,5 @@ def about():
 @app.route("/game")
 def game():
     users = User.query.all()
-    current_user = User.query.order_by('-id').first()
+    current_user = User.query.order_by('id').first()
     return render_template('game.html', title="Игра", users=users, current_user=current_user)
