@@ -27,7 +27,7 @@
                   </div>
                </div>
             </div>
-            <div class="col-md-8 imback_height imback pl-1 pr-1 pt-2 pb-2 align-items-center">
+            <div class="col-md-8 imback_height imback pl-1 pr-1 pt-2 pb-2 align-items-center rounded-right">
                <img src="{{ url_for('static', filename='9.jpg') }}" alt="" class="img-fluid">
             </div>
          </div>
@@ -107,10 +107,20 @@
       <!-- Конец левой колонки -->
 
       <!-- Начало правой колонки -->
-      <div class="col-md-8">
-         <div class="row">
+      <div class="col-md-9">
+         <!-- Игроки -->
+         <div class="row mt-1">
+            <div class="col text-center titles">
+               Игроки:
+            </div>
+         </div>
+         <div class="row mt-4">
             {% for user in users %}
-                  <div class="main-text"> {{ user.username }}</div>
+               <div class="col text-center titles_2">
+                  {{ user.username }}
+                  <img src="{{ url_for('static', filename='circle1.png') }}" class="mx-auto d-block">
+               </div>
+
             {% endfor %}
          </div>
       </div>

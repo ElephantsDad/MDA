@@ -39,6 +39,19 @@ h1, h2, h3, h4, h5, h6 {
    color: #1c2135;
    font-size: 3rem;
 }
+
+.titles {
+   font-family: 'Neucha';
+   color: #1c2135;
+   font-size: 2rem;
+}
+
+.titles_2 {
+   font-family: 'Neucha';
+   color: #1c2135;
+   font-size: 1.5rem;
+}
+
 .main-text {
    font-family: 'Marmelad';
    color: #1c2135;
