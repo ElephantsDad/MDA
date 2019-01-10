@@ -17,6 +17,7 @@ def home():
     form = SubmitForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)
+        #g.curuser = user
         db.session.add(user)
         db.session.commit()
         return game()
@@ -44,7 +45,9 @@ def message():
     try:
         username = request.form.get('username')
         message = request.form.get('message')
-        pusher_client.trigger('chat-channel', 'new-message', {'username' : username, 'message' : message})
+        print(username)
+        print(message)
+        #pusher_client.trigger('chat-channel', 'new-message', {'username' : username, 'message' : message})
         return jsonify({'result' : 'success'})
     except:
         return jsonify({'result' : 'failure'})

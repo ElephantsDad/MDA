@@ -30,7 +30,7 @@
                                  {% endfor %}
                               </div>
                         {% else %}
-                           {{ form.username(class="username-in form-control form-control-sm  col-md-2") }}
+                           {{ form.username(class="form-control form-control-sm  col-md-2", id="username-in") }}
                         {% endif %}
                      </div>
                   </fieldset>
@@ -49,8 +49,11 @@
    <script>
       $(function() {
          $('#username-sbtn').on('click', function() {
-            let username = $('.username-in').val();
+            let username = $('#username-in').val();
             alert(username);
+            $.post('/message', {'username' : username}, function() {
+
+            });
          })
       });
       // Enable pusher logging - don't include this in production
