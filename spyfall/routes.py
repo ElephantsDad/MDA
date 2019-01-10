@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, jsonify, request
 from spyfall import app, db
 from spyfall.forms import SubmitForm, SendMessageForm
 from spyfall.models import User, Location
@@ -20,7 +20,10 @@ def home():
         db.session.add(user)
         db.session.commit()
         return game()
+        #pusher_client.trigger('my-channel', 'my-event', {'message': 'hello world'})
+        #return render_template('home.html', form=form) #потом поменять на return game()
     else:
+        #pusher_client.trigger('my-channel', 'my-event', {u'message': u'why'})
         return render_template('home.html', form=form)
 
 
@@ -36,10 +39,20 @@ def locations():
 def about():
     return render_template('about.html', title="О разработчиках")
 
+@app.route("/message", methods=['GET', 'POST'])
+def message():
+    try:
+        username = request.form.get('username')
+        message = request.form.get('message')
+        pusher_client.trigger('chat-channel', 'new-message', {'username' : username, 'message' : message})
+        return jsonify({'result' : 'success'})
+    except:
+        return jsonify({'result' : 'failure'})
+
 @app.route("/game", methods=['GET', 'POST'])
 def game():
     form = SendMessageForm()
-    users = User.query.all()
-    current_user = User.query.order_by('id').first()
-    pusher_client.trigger('my-channel', 'my-event', {u'message': u'why'})
+    users = User.query.limit(7).all()
+    current_user = User.query.order_by('-id').first()
+    #pusher_client.trigger('my-channel', 'my-event', {u'message': u'why'})
     return render_template('game.html', title="Игра", users=users, current_user=current_user, form=form)
