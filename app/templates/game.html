@@ -1,0 +1,253 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+   <!-- Начало левой колонки -->
+   <div class="col-md-4 float-left">
+      <!-- Локация -->
+      <div class="row">
+         <div class="col-md-4 imback_height locback p-1">
+            <div class="row">
+               <div class="col-md-12 imback_height_half">
+                  <div class="text-center white-text-big pt-5" style="text-decoration: underline">
+                        <b>Локация:</b>
+                  </div>
+                  <div class="text-center white-text">
+                        {{ rloc_name }}
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-12 imback_height_half">
+                  <div class="text-center white-text-big pt-5" style="text-decoration: underline">
+                        <b>Роль:</b>
+                  </div>
+                  <div class="text-center white-text">
+                        {{ current_user.role }}
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-8 imback_height imback pl-1 pr-1 pt-2 pb-2 align-items-center rounded-right">
+               <img src="{{ url_for('static', filename=rloc_img) }}" alt="" class="img-fluid">
+         </div>
+      </div>
+         <!-- Часики -->
+         <div class="row">
+            <div id="timer" class="col-md-12 timmer text-center p-3">
+               <!--<div class="form-group">
+                  <div class="d-flex justify-content-center py-2">
+                     <button id="Start" name="Start" onclick="style.display='none'" class="btn btn-primary">
+                        Старт
+                     </button>
+                  </div>
+               </div>-->
+               <script>
+               var now = new Date();
+               var fiveMinutesLater = new Date();
+               var fiveMinutesLater = new Date(now.getTime() + (1 * 20 * 1000));
+               var x = setInterval(function() {
+               var now = new Date().getTime();
+               var distance = fiveMinutesLater - now;
+                     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                     if (seconds < 10) {
+                       document.getElementById("timer").innerHTML = minutes + ":0" + seconds;
+                    }
+                    else {
+                       document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+                    };
+                    if (distance < 0) {
+                       clearInterval(x);
+                       document.getElementById("timer").innerHTML = "0:00";
+                       $('#myModal').modal('show');
+                    }
+                    }, 1000);
+               </script>
+            </div>
+         </div>
+         <!-- Модальное окно -->
+         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title about-text text-center" id="myModalLabel">Игра окончена</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body text-center">
+                     Шпион выиграл
+                  </div>
+                  <div class="modal-footer">
+                     <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">Выйти</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+                        <!-- Кнопка голосовать/угадать локацию -->
+            {% if current_user.role == 'шпион' %}
+               <!-- Кнопка угадать локацию -->
+               <div class="row">
+                  <div class="col-md-12 center-block">
+                     <!-- Button trigger modal -->
+                     <div class="form-group">
+                        <div class="d-flex justify-content-center py-1">
+                           <button type="button" class="btn btn-primary  btn-lg" data-toggle="modal" data-target="#exampleModal">
+                              Угадать локацию
+                           </button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- Модальное окно -->
+               <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title about-text" id="exampleModalLabel">Где мы?</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        <div class="modal-body">
+                           <select>
+                              <option>Деревня</option>
+                              <option>Маяк</option>
+                              <option>Затерянный остров</option>
+                              <option>Встреча алкоголиков</option>
+                              <option>Улица</option>
+                              <option>Парк аттракционов</option>
+                              <option>Космос</option>
+                              <option>Гримерка</option>
+                              <option>Цирк</option>
+                           </select>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Принять</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            {% else %}
+            <div class="row">
+               <div class="col-md-12 center-block">
+                  <!-- Button trigger modal -->
+                  <div class="form-group">
+                     <div class="d-flex justify-content-center py-1">
+                        <button type="button" class="btn btn-primary  btn-lg" data-toggle="modal" data-target="#exampleModal">
+                           Угадать шпиона
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Модальное окно -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title about-text text-center" id="exampleModalLabel">Кто шпион?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+                     <div class="modal-body text-center">
+                        <select>
+                           {% for user in users %}
+	                          <option>
+                                <div class="col text-center titles_2">
+                                   {{ user.username }}
+                                </div>
+                             </option>
+                               {% endfor %}
+                        </select>
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Принять</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {% endif %}
+         <!-- Кнопка выйти -->
+         <div class="row justify-content-center py-1">
+            <a href="http://localhost:5000" class="btn btn-primary btn-lg">Выйти</a>
+         </div>
+      </div>
+      <!-- Конец левой колонки -->
+      <!-- Начало правой колонки -->
+      <div class="col-md-8">
+         <!-- Игроки -->
+         <div class="row mt-1">
+            <div class="col text-center titles">
+               Игроки:
+            </div>
+         </div>
+         <div class="row mt-4">
+
+            <!--{% for user in users %}
+               <div class="col text-center titles_2">
+                  {{ user.username }}
+                  <img src="{{ url_for('static', filename='circle1.png') }}" class="mx-auto d-block">
+               </div>
+
+            {% endfor %}-->
+         </div>
+         <!-- Чат -->
+         <div class="container mt-5 mb-5 pl-5 pr-5 text-left">
+            <article class="media p-2 rounded" style="background: #ffffff">
+               <textarea id="chat" cols="80" rows="20"  class="message-area media-content" readonly contenteditable="false"></textarea>
+            </article>
+            <div class="row mt-2 mb-2 p-1">
+                  {{ form.hidden_tag() }}
+                  <div class="col-md-10">
+                     {{ form.message(class="form-control form-control-sm", id="text") }}
+                  </div>
+                  <div class="col-md-2">
+                     {{ form.submit(class="btn btn-default btn-sm", id="message-sbtn") }}
+                  </div>
+            </div>
+         </div>
+      </div>
+      <!-- Конец правой колонки -->
+
+<div>
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+   crossorigin="anonymous"></script>
+   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+   <script type="text/javascript" charset="utf-8">
+      var socket;
+         $(document).ready(function(){
+            socket = io.connect('http://' + document.domain + ':' + location.port + '/game');
+            socket.on('connect', function() {
+               socket.emit('joined', {});
+            });
+            socket.on('status', function(data) {
+               $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
+               $('#chat').scrollTop($('#chat')[0].scrollHeight);
+            });
+            socket.on('message', function(data) {
+               $('#chat').val($('#chat').val() + data.msg + '\n');
+               $('#chat').scrollTop($('#chat')[0].scrollHeight);
+            });
+            $('#text').keypress(function(e) {
+               var code = e.keyCode || e.which;
+               if (code == 13) {
+                  text = $('#text').val();
+                  $('#text').val('');
+                  socket.emit('text', {msg: text});
+               }
+            });
+         });
+         function leave_room() {
+            socket.emit('left', {}, function() {
+               socket.disconnect();
+                  // go back to the login page
+               window.location.href = "{{ url_for('main.index') }}";
+            });
+         }
+   </script>
+    <body>
+
+    </body>
+{% endblock content %}
