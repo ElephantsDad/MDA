@@ -1,6 +1,5 @@
-#!/bin/env python
 #C:\Users\Asus\Projects\Environments\flasksocketiochat\Scripts\activate.bat
-#cd C:\Users\Asus\Desktop\chat1\chat
+#cd C:\Users\Asus\MDA
 from app import create_app, socketio
 
 app = create_app(debug=True)
