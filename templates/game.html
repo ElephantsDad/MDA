@@ -12,7 +12,7 @@
                         <b>Локация:</b>
                   </div>
                   <div class="text-center white-text">
-                        {{ rloc_name }}
+                     локация
                   </div>
                </div>
             </div>
@@ -22,18 +22,19 @@
                         <b>Роль:</b>
                   </div>
                   <div class="text-center white-text">
-                        {{ current_user.role }}
+                     роль
                   </div>
                </div>
             </div>
          </div>
          <div class="col-md-8 imback_height imback pl-1 pr-1 pt-2 pb-2 align-items-center rounded-right">
-               <img src="{{ url_for('static', filename=rloc_img) }}" alt="" class="img-fluid">
+               <img src="{{ url_for('static', filename='location_1.jpg') }}" alt="" class="img-fluid">
          </div>
       </div>
          <!-- Часики -->
          <div class="row">
             <div id="timer" class="col-md-12 timmer text-center p-3">
+               <!-- Кнопка старт -->
                <!--<div class="form-group">
                   <div class="d-flex justify-content-center py-2">
                      <button id="Start" name="Start" onclick="style.display='none'" class="btn btn-primary">
@@ -79,13 +80,13 @@
                      Шпион выиграл
                   </div>
                   <div class="modal-footer">
-                     <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">Выйти</a>
+                     <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">Выйти</a>
                   </div>
                </div>
             </div>
          </div>
                         <!-- Кнопка голосовать/угадать локацию -->
-            {% if current_user.role == 'шпион' %}
+            {% if current_user == 'шпион' %}
                <!-- Кнопка угадать локацию -->
                <div class="row">
                   <div class="col-md-12 center-block">
@@ -151,7 +152,7 @@
                            <span aria-hidden="true">&times;</span>
                         </button>
                      </div>
-                     <div class="modal-body text-center">
+                     <!--<div class="modal-body text-center">
                         <select>
                            {% for user in users %}
 	                          <option>
@@ -161,7 +162,7 @@
                              </option>
                                {% endfor %}
                         </select>
-                     </div>
+                     </div> -->
                      <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Принять</button>
                      </div>
@@ -243,7 +244,7 @@
             socket.emit('left', {}, function() {
                socket.disconnect();
                   // go back to the login page
-               window.location.href = "{{ url_for('main.index') }}";
+               window.location.href = "{{ url_for('index') }}";
             });
          }
    </script>
