@@ -1,3 +1,5 @@
+#C:\Users\Asus\Projects\Environments\flasksocketiochat\Scripts\activate.bat
+#cd C:\Users\Asus\MDA
 from flask import Flask
 from flask import session, redirect, url_for, render_template, request
 from flask_sqlalchemy import SQLAlchemy
@@ -6,6 +8,7 @@ from flask_migrate import Migrate
 from forms import LoginForm, SendMessageForm
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from datetime import datetime
+import uuid
 
 app = Flask(__name__)
 
@@ -21,35 +24,49 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), nullable=False)
     session_id = db.Column(db.String(200), nullable=False)
-    isready = db.Column(db.Boolean, default='False')
-    room = db.relationship('Rooms', backref='spy')
+    isready = db.Column(db.Integer, default='0')
+    room_id = db.Column(db.Integer, db.ForeignKey('rooms.id'))
     def __repr__(self):
-        return f"User('{self.username}')"
+        return f"User('{self.username}', '{self.session_id}')"
 
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(15), nullable=False)
     image_file = db.Column(db.String(20))
-    rooms = db.relationship('Rooms', backref='place')
+    room = db.relationship('Rooms', backref='place', lazy=False)
     def __repr__(self):
         return f"Location('{self.name}', '{self.image_file}')"
-
-chats = db.Table('chats',
-    db.Column('room_id', db.Integer, db.ForeignKey('rooms.id')),
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
-    )
 
 class Rooms(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     s_id = db.Column(db.String(200), nullable=False)
     status = db.Column(db.String(20), nullable=False)
     start_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    spy_id = db.Column(db.Integer, default=1)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
-    spy_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    players = db.relationship('User', secondary=chats, backref=db.backref('chatroom'))
+    users = db.relationship('User', backref='player', lazy=False)
 
     def __repr__(self):
         return f"Rooms('{self.location}', '{self.spy}')"
+
+def RandomLocation():
+    import random
+    x = random.randint(1,3)
+    r_location = db.session.query(Location).filter_by(id=x).first()
+    loc_id = r_location.id
+    return loc_id
+
+
+def RandomSpy(room):
+    import random
+    A = []
+    count = 0
+    for user in room.users:
+        A.append(user.id)
+        count += 1
+    x = random.randint(0,count-1)
+    spy = db.session.query(User).filter_by(id=A[x]).first()
+    spy.isready = 1
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -58,6 +75,34 @@ def index():
     if form.validate_on_submit():
         session['name'] = form.name.data
         session['room'] = form.room.data
+        room_empty = db.session.query(Rooms).filter_by(status='active').count()
+        session_id = str(uuid.uuid1())
+        if room_empty == 0:
+            a_room = Rooms(s_id=session_id, status='active')
+            db.session.add(a_room)
+            db.session.commit()
+            new_user = User(username='name', session_id=session_id, room_id=a_room.id)
+            db.session.add(new_user)
+            db.session.commit()
+            a_room.location_id = RandomLocation()
+            db.session.commit()
+            session['room'] = a_room.s_id
+        else:
+            a_room = db.session.query(Rooms).filter_by(status='active').first()
+            session['room'] = a_room.s_id
+            new_user = User(username='name', session_id=session_id, room_id=a_room.id)
+            db.session.add(new_user)
+            db.session.commit()
+            count = 0
+            print(a_room.users)
+            for user in a_room.users:
+                count = count + 1
+                print(count)
+            if count >= 3:
+                a_room.status = 'closed'
+                db.session.commit()
+            RandomSpy(a_room)
+        session['cur_user_id'] = new_user.id
         return redirect(url_for('.game'))
     elif request.method == 'GET':
         form.name.data = session.get('name', '')
@@ -83,9 +128,16 @@ def game():
     form = SendMessageForm()
     name = session.get('name', '')
     room = session.get('room', '')
+    cur_user_id = session.get('cur_user_id', '')
+    current_user = db.session.query(User).filter_by(id=cur_user_id).first()
+    #location = session.get('location', '')
+    room1 = db.session.query(Rooms).filter_by(s_id=room).first()
+    location_id = room1.location_id
+    location = db.session.query(Location).filter_by(id=location_id).first()
     if name == '' or room == '':
         return redirect(url_for('.index'))
-    return render_template('game.html', name=name, form=form, room=room, title="Игра", current_user='шпион')
+    return render_template('game.html', name=name, form=form, room=room, title="Игра",
+                            current_user=current_user, location=location)
 
 @socketio.on('joined', namespace='/game')
 def joined(message):
@@ -113,3 +165,8 @@ def left(message):
 
 if __name__ == '__main__':
     socketio.run(app)
+
+
+#from run import db
+#db.create_all()
+#from run import User, Rooms, Location, chats

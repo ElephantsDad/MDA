@@ -4,7 +4,7 @@
    <!-- Начало левой колонки -->
    <div class="col-md-4 float-left">
       <!-- Локация -->
-      <div class="row">
+      <div class="row form-group">
          <div class="col-md-4 imback_height locback p-1">
             <div class="row">
                <div class="col-md-12 imback_height_half">
@@ -12,7 +12,11 @@
                         <b>Локация:</b>
                   </div>
                   <div class="text-center white-text">
-                     локация
+                     {% if current_user.isready == 1 %}
+                        Неизвестно
+                     {% else %}
+                        {{ location.name }}
+                     {% endif %}
                   </div>
                </div>
             </div>
@@ -22,13 +26,22 @@
                         <b>Роль:</b>
                   </div>
                   <div class="text-center white-text">
-                     роль
+                     {% if current_user.isready == 1 %}
+                        Шпион
+                     {% else %}
+                        Нешпион
+                     {% endif %}
                   </div>
                </div>
             </div>
          </div>
-         <div class="col-md-8 imback_height imback pl-1 pr-1 pt-2 pb-2 align-items-center rounded-right">
-               <img src="{{ url_for('static', filename='location_1.jpg') }}" alt="" class="img-fluid">
+         <div class="col-md-8 imback_height imback align-items-center rounded-right d-flex justify-content-center">
+            {% if current_user.isready == 1 %}
+               <img src="{{ url_for('static', filename='spy.jpg') }}" alt="" class="img-fluid">
+            {% else %}
+               <img src="{{ url_for('static', filename=location.image_file) }}" alt="" class="img-fluid">
+            {% endif %}
+
          </div>
       </div>
          <!-- Часики -->
@@ -86,7 +99,7 @@
             </div>
          </div>
                         <!-- Кнопка голосовать/угадать локацию -->
-            {% if current_user == 'шпион' %}
+            {% if current_user.isready == 1 %}
                <!-- Кнопка угадать локацию -->
                <div class="row">
                   <div class="col-md-12 center-block">
