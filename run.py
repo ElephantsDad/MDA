@@ -28,8 +28,9 @@ class User(db.Model):
     username = db.Column(db.String(15), nullable=False)
     session_id = db.Column(db.String(200), nullable=False)
     isready = db.Column(db.Integer, default='0')
+    isspy = db.Column(db.Integer, default='0')
     room_id = db.Column(db.Integer, db.ForeignKey('rooms.id'))
-    isready = db.Column(db.Integer, default='0')
+
     def __repr__(self):
         return f"User('{self.username}', '{self.session_id}')"
 
@@ -61,17 +62,29 @@ def RandomLocation():
     return loc_id
 
 
-def RandomSpy(room):
+def RandomSpy(a_room, new_user):
     import random
-    A = []
+    ifspy = 0
     count = 0
-    for user in room.users:
-        A.append(user.id)
-        count += 1
-    x = random.randint(0,count-1)
-    spy = db.session.query(User).filter_by(id=A[x]).first()
-    spy.isready = 1
-    db.session.commit()
+    A = []
+    for user in a_room.users:
+        if user.isspy == 1:
+            ifspy = 1
+            break
+        else:
+            A.append(user.id)
+            ifspy = 0
+            count += 1
+    if count == 3:
+        x = random.randint(0,count-1)
+        spy = db.session.query(User).filter_by(id=A[x]).first()
+        spy.isspy = 1
+        db.session.commit()
+    else:
+        if not ifspy:
+            x = random.randint(0,1)
+            new_user.isspy = x
+            db.session.commit()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -85,7 +98,7 @@ def index():
             a_room = Rooms(s_id=session_id, status='active')
             db.session.add(a_room)
             db.session.commit()
-            new_user = User(username='name', session_id=session_id, room_id=a_room.id)
+            new_user = User(username=session.get('name', ''), session_id=session_id, room_id=a_room.id)
             db.session.add(new_user)
             db.session.commit()
             a_room.location_id = RandomLocation()
@@ -94,7 +107,7 @@ def index():
         else:
             a_room = db.session.query(Rooms).filter_by(status='active').first()
             session['room'] = a_room.s_id
-            new_user = User(username='name', session_id=session_id, room_id=a_room.id)
+            new_user = User(username=session.get('name', ''), session_id=session_id, room_id=a_room.id)
             db.session.add(new_user)
             db.session.commit()
             count = 0
@@ -105,7 +118,8 @@ def index():
             if count >= 3:
                 a_room.status = 'closed'
                 db.session.commit()
-                RandomSpy(a_room)
+        RandomSpy(a_room, new_user)
+        db.session.commit()
         session['cur_user_id'] = new_user.id
         return redirect(url_for('.game'))
     elif request.method == 'GET':
@@ -139,10 +153,12 @@ def game():
     room1 = db.session.query(Rooms).filter_by(s_id=room).first()
     location_id = room1.location_id
     location = db.session.query(Location).filter_by(id=location_id).first()
+    start_time = room1.start_time
+    session['time'] = str(start_time)
     if name == '' or room == '':
         return redirect(url_for('.index'))
     return render_template('game.html', name=name, form=form, room=room, title="Игра",
-                            current_user=current_user, location=location)
+                            current_user=current_user, location=location, start_time=start_time)
 
 @socketio.on('joined', namespace='/game')
 def joined(message):
@@ -150,7 +166,7 @@ def joined(message):
     A status message is broadcast to all people in the room."""
     room = session.get('room')
     join_room(room)
-    emit('status', {'msg': session.get('name') + ' присоединился/ась к игре ' + session.get('room')}, room=room)
+    emit('status', {'msg': session.get('name') + ' присоединился/ась к игре ' + session.get('room') + ' Время: ' + session.get('time')}, room=room)
 
 @socketio.on('text', namespace='/game')
 def text(message):
@@ -164,6 +180,11 @@ def left(message):
     """Sent by clients when they leave a room.
     A status message is broadcast to all people in the room."""
     room = session.get('room')
+    room_obj = db.session.query(Rooms).filter_by(s_id=room).first()
+    room_id = room_obj.id
+    leaving_user = db.session.query(User).filter_by(room_id=room_id, username=name).first()
+    db.session.query(User).filter_by(id=leaving_user.id).delete()
+    db.session.commit()
     leave_room(room)
     emit('status', {'msg': session.get('name') + ' покинул/а чат.'}, room=room)
 

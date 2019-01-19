@@ -26,7 +26,7 @@
                         <b>Роль:</b>
                   </div>
                   <div class="text-center white-text">
-                     {% if current_user.isready == 1 %}
+                     {% if current_user.isspy == 1 %}
                         Шпион
                      {% else %}
                         Нешпион
@@ -35,47 +35,39 @@
                </div>
             </div>
          </div>
-         <div class="col-md-8 imback_height imback align-items-center rounded-right d-flex justify-content-center">
-            {% if current_user.isready == 1 %}
+         <div class="col-md-8 imback_height imback align-items-center rounded-right d-flex justify-content-center pt-2 pb-2">
+            {% if current_user.isspy == 1 %}
                <img src="{{ url_for('static', filename='spy.jpg') }}" alt="" class="img-fluid">
             {% else %}
                <img src="{{ url_for('static', filename=location.image_file) }}" alt="" class="img-fluid">
             {% endif %}
-
          </div>
       </div>
          <!-- Часики -->
          <div class="row">
             <div id="timer" class="col-md-12 timmer text-center p-3">
-               <!-- Кнопка старт -->
-               <!--<div class="form-group">
-                  <div class="d-flex justify-content-center py-2">
-                     <button id="Start" name="Start" onclick="style.display='none'" class="btn btn-primary">
-                        Старт
-                     </button>
-                  </div>
-               </div>-->
                <script>
-               var now = new Date();
-               var fiveMinutesLater = new Date();
-               var fiveMinutesLater = new Date(now.getTime() + (5 * 60 * 1000 + 1000));
-               var x = setInterval(function() {
-               var now = new Date().getTime();
-               var distance = fiveMinutesLater - now;
-                     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                  let s_time = {{ start_time }};
+                  var now = s_time;
+                  var fiveMinutesLater = new Date();
+                  var fiveMinutesLater = new Date(now + (5 * 60 * 1000 + 1000));
+                  var x = setInterval(function() {
+                  var now = new Date().getTime();
+                  var distance = fiveMinutesLater - now;
+                  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                      if (seconds < 10) {
-                       document.getElementById("timer").innerHTML = minutes + ":0" + seconds;
-                    }
-                    else {
-                       document.getElementById("timer").innerHTML = minutes + ":" + seconds;
-                    };
-                    if (distance < 0) {
-                       clearInterval(x);
-                       document.getElementById("timer").innerHTML = "0:00";
-                       $('#myModal').modal('show');
-                    }
-                    }, 1000);
+                        document.getElementById("timer").innerHTML = minutes + ":0" + seconds;
+                     }
+                     else {
+                        document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+                     };
+                     if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById("timer").innerHTML = "0:00";
+                        $('#myModal').modal('show');
+                     }
+                     }, 1000);
                </script>
             </div>
          </div>
@@ -99,7 +91,7 @@
             </div>
          </div>
                         <!-- Кнопка голосовать/угадать локацию -->
-            {% if current_user.isready == 1 %}
+            {% if current_user.isspy == 1 %}
                <!-- Кнопка угадать локацию -->
                <div class="row">
                   <div class="col-md-12 center-block">
@@ -185,7 +177,7 @@
             {% endif %}
          <!-- Кнопка выйти -->
          <div class="row justify-content-center py-1">
-            <a href="http://localhost:5000" class="btn btn-primary btn-lg">Выйти</a>
+            <a href="#" onclick="leave_room();" class="btn btn-primary btn-lg">Выйти</a>
          </div>
       </div>
       <!-- Конец левой колонки -->
@@ -262,6 +254,5 @@
          }
    </script>
     <body>
-
     </body>
 {% endblock content %}
