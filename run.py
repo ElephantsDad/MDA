@@ -8,6 +8,7 @@ from flask_migrate import Migrate
 from forms import LoginForm, SendMessageForm
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from datetime import datetime
+#from flask_script import Manager
 import uuid
 
 app = Flask(__name__)
@@ -19,6 +20,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 socketio = SocketIO(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
+#manager = Manager(app)
+#manager.add_command('db', MigrateCommand)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +29,7 @@ class User(db.Model):
     session_id = db.Column(db.String(200), nullable=False)
     isready = db.Column(db.Integer, default='0')
     room_id = db.Column(db.Integer, db.ForeignKey('rooms.id'))
+    isready = db.Column(db.Integer, default='0')
     def __repr__(self):
         return f"User('{self.username}', '{self.session_id}')"
 
@@ -67,7 +71,7 @@ def RandomSpy(room):
     x = random.randint(0,count-1)
     spy = db.session.query(User).filter_by(id=A[x]).first()
     spy.isready = 1
-
+    db.session.commit()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -101,7 +105,7 @@ def index():
             if count >= 3:
                 a_room.status = 'closed'
                 db.session.commit()
-            RandomSpy(a_room)
+                RandomSpy(a_room)
         session['cur_user_id'] = new_user.id
         return redirect(url_for('.game'))
     elif request.method == 'GET':
@@ -130,6 +134,7 @@ def game():
     room = session.get('room', '')
     cur_user_id = session.get('cur_user_id', '')
     current_user = db.session.query(User).filter_by(id=cur_user_id).first()
+    #current_user.isready = 1
     #location = session.get('location', '')
     room1 = db.session.query(Rooms).filter_by(s_id=room).first()
     location_id = room1.location_id
